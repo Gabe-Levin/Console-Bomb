@@ -10,13 +10,19 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:extension.consoleBomb"
+  ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
       {
         "command": "extension.consoleBomb",
         "title": "console bomb"
+      },
+      {
+        "command": "extension.removeConsoleLog",
+        "title": "Remove Console Log"
       }
     ]
   },
