@@ -3,6 +3,7 @@
   "displayName": "Console Bomb",
   "publisher": "ConsoleBomb",
   "description": "",
+  "icon": "images/icon.png",
   "version": "0.0.2",
   "engines": {
     "vscode": "^1.82.0"
