@@ -1,8 +1,21 @@
 const vscode = require('vscode');
+const acorn = require('acorn');
+
+function isValidJavaScript(content) {
+    try {
+        acorn.parse(content, { ecmaVersion: 2020 });
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
 
 /**
  * @param {vscode.ExtensionContext} context
  */
+
+
+
 function activate(context) {
     let disposable = vscode.commands.registerCommand('extension.consoleBomb', function () {
         const editor = vscode.window.activeTextEditor;
@@ -10,13 +23,26 @@ function activate(context) {
         if (editor) {
             const document = editor.document;
             const documentContent = document.getText();
-
+            let consoleCounter = 1;
             const newContent = documentContent.split('\n').map((line, index) => {
-                // Check if it's an even line (0-based index)
+
                 if (index % 2 === 1) {
-                    return line + '\nconsole.log();';
+                    const potentialNewLine = line + `\nconsole.log("explosion ${consoleCounter}");`;
+
+                    // Check the whole content with the new line added
+                    const potentialNewContent = [
+                        ...documentContent.split('\n').slice(0, index),
+                        potentialNewLine,
+                        ...documentContent.split('\n').slice(index + 1),
+                    ].join('\n');
+
+                    // If it's valid, use the new line, otherwise keep the original line
+                    if (isValidJavaScript(potentialNewContent)) {
+                        consoleCounter++;
+                        return potentialNewLine;
+                    }
                 }
-                return line;
+                return line
             }).join('\n');
 
             const wholeRange = new vscode.Range(
@@ -41,7 +67,7 @@ function activate(context) {
             const documentContent = document.getText();
     
             // Use a regular expression to match lines that only contain 'console.log();'
-            const newContent = documentContent.replace(/^\s*console\.log\(\);?\s*$/gm, '');
+            const newContent = documentContent.replace(/^\s*console\.log\("explosion on line .*/gm, '');
     
             const wholeRange = new vscode.Range(
                 document.positionAt(0),
