@@ -18,11 +18,11 @@
     "commands": [
       {
         "command": "extension.consoleBomb",
-        "title": "console bomb"
+        "title": "Console Bomb: Explode"
       },
       {
-        "command": "extension.removeConsoleLog",
-        "title": "Remove Console Log"
+        "command": "extension.removeConsoleBombs",
+        "title": "Console Bomb: Defuse"
       }
     ]
   },

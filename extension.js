@@ -59,21 +59,19 @@ function activate(context) {
     context.subscriptions.push(disposable);
 
     // Remove console.log(); command
-    let removeDisposable = vscode.commands.registerCommand('extension.removeConsoleLog', function () {
+    let removeDisposable = vscode.commands.registerCommand('extension.removeConsoleBombs', function () {
         const editor = vscode.window.activeTextEditor;
-    
         if (editor) {
             const document = editor.document;
             const documentContent = document.getText();
     
             // Use a regular expression to match lines that only contain 'console.log();'
-            const newContent = documentContent.replace(/^\s*console\.log\("explosion on line .*/gm, '');
+            const newContent = documentContent.replace(/^\s*console\.log\("explosion \d+"\);/gm, '');
     
             const wholeRange = new vscode.Range(
                 document.positionAt(0),
                 document.positionAt(documentContent.length)
             );
-    
             editor.edit((editBuilder) => {
                 editBuilder.replace(wholeRange, newContent);
             });
